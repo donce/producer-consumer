@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,22 +9,25 @@ namespace ProducerCustomer
 {
     class Consumer
     {
-        private readonly IBuffer _buffer;
+        private readonly BlockingCollection<int> _collection;
         
-        public Consumer(IBuffer buffer)
+        public Consumer(BlockingCollection<int> collection)
         {
-            if (buffer == null)
+            if (collection == null)
                 throw new ArgumentNullException();
-            _buffer = buffer;
+            _collection = collection;
         }
 
         public void Run()
         {
-            int item = _buffer.Take();
-            while (item != Producer.LastElement)
+            while (!_collection.IsCompleted)
             {
-                Console.WriteLine("Take {0}.", item);
-                item = _buffer.Take();
+                try
+                {
+                    int item = _collection.Take();
+                    Console.WriteLine("Take {0}.", item);
+                }
+                catch (InvalidOperationException) { }
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,16 +11,16 @@ namespace ProducerCustomer
     {
         public static int LastElement = -1;
 
-        private IBuffer _buffer;
+        private BlockingCollection<int> _collection;
         private int _howMany;
 
-        public Producer(IBuffer buffer, int howMany)
+        public Producer(BlockingCollection<int> collection, int howMany)
         {
-            if (buffer == null)
-                throw new ArgumentNullException("buffer");
+            if (collection == null)
+                throw new ArgumentNullException("collection");
             if (howMany < 0)
                 throw new ArgumentOutOfRangeException("howMany");
-            _buffer = buffer;
+            _collection = collection;
             _howMany = howMany;
         }
 
@@ -27,10 +28,10 @@ namespace ProducerCustomer
         {
             for (int i = 1; i <= _howMany; ++i)
             {
-                _buffer.Put(i);
+                _collection.Add(i);
                 Console.WriteLine("Put {0}.", i);
             }
-            _buffer.Put(LastElement);
+            _collection.CompleteAdding();
         }
     }
 }
