@@ -12,18 +12,27 @@ namespace ProducerCustomer
     {
         static void Main(string[] args)
         {
-            BlockingCollection<int> collection = new BlockingCollection<int>();
-            Producer producer = new Producer(collection, 10);
-            Consumer consumer = new Consumer(collection);
-            Consumer consumer2 = new Consumer(collection);
-            Task[] tasks = new Task[3];
-            tasks[2] = Task.Factory.StartNew(consumer2.Run);
-            tasks[1] = Task.Factory.StartNew(consumer.Run);
-            Thread.Sleep(1000);
-            tasks[0] = Task.Factory.StartNew(producer.Run);
+            BlockingCollection<int> firstCollection = new BlockingCollection<int>();
+            BlockingCollection<int> secondCollection = new BlockingCollection<int>();
+            Producer producer = new Producer(firstCollection, 10);
+//            MiddleMan middleman = new MiddleMan(firstCollection, secondCollection);
+            FilterWorker filterWorker = new FilterWorker(firstCollection, secondCollection, IsEven);
+            Consumer consumer = new Consumer(secondCollection);
+//            Consumer consumer2 = new Consumer(collection);
+
+            List<Task> tasks = new List<Task>();
+            tasks.Add(Task.Factory.StartNew(producer.Run));
+//            tasks.Add(Task.Factory.StartNew(middleman.Run));
+            tasks.Add(Task.Factory.StartNew(filterWorker.Run));
+            tasks.Add(Task.Factory.StartNew(consumer.Run));
 
             //TODO: "Use thread pools in mains"
-            Task.WaitAll(tasks);
+            Task.WaitAll(tasks.ToArray());
+        }
+
+        static bool IsEven(int number)
+        {
+            return number%2 == 0;
         }
     }
 }

@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class MiddleMan
+    class FilterWorker
     {
         private BlockingCollection<int> _collectionIn, _collectionOut;
-
-        public MiddleMan(BlockingCollection<int> collectionIn, BlockingCollection<int> collectionOut)
+        private Predicate<int> _filter; 
+        
+        public FilterWorker(BlockingCollection<int> collectionIn, BlockingCollection<int> collectionOut, Predicate<int> filter)
         {
             _collectionIn = collectionIn;
             _collectionOut = collectionOut;
+            _filter = filter;
         }
 
         public void Run()
@@ -24,7 +26,8 @@ namespace ProducerCustomer
                 try
                 {
                     int item = _collectionIn.Take();
-                    _collectionOut.Add(item);
+                    if (_filter(item))
+                        _collectionOut.Add(item);
                     Console.WriteLine("Take {0}.", item);
                 }
                 catch (InvalidOperationException) { }
