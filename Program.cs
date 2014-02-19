@@ -13,20 +13,9 @@ namespace ProducerCustomer
 {
     class Program
     {
-
         [STAThread]
         static void Main(string[] args)
         {
-//            new BufferWindow().Visible = true;
-//            Task.Factory.StartNew(() => new BufferWindow().Visible = true);
-//            BufferWindow window = new BufferWindow();
-//            window.Visible = true;
-//            window.
-//            window.Update();
-//            window.Activate();
-
-
-//            Console.WriteLine(window.Visible);
             BlockingCollection<int> collectionA = new BlockingCollection<int>();
             BlockingCollection<int> collectionB = new BlockingCollection<int>();
 //            BlockingCollection<int> collectionC = new BlockingCollection<int>();
@@ -35,10 +24,8 @@ namespace ProducerCustomer
             showCollection(collectionA);
             showCollection(collectionB);
 
-            Producer producer = new Producer(collectionA, 10);
-            startWorker(producer);
-            FilterWorker<int> filterWorker = new FilterWorker<int>(collectionA, collectionB, IsPrime);
-            startWorker(filterWorker);
+            startWorker(new Producer(collectionA, 10));
+            startWorker(new FilterWorker<int>(collectionA, collectionB, IsPrime));
 //            DivideWorker<int> divideWorker = new DivideWorker<int>(collectionB, new BlockingCollection<int>[] { collectionC, collectionD }, IntMod2);
 //            Consumer<int> consumerA = new Consumer<int>(collectionC);
 //            Consumer<int> consumerB = new Consumer<int>(collectionD);
@@ -50,20 +37,6 @@ namespace ProducerCustomer
 //            tasks.Add(Task.Factory.StartNew(consumerA.Run));
 //            tasks.Add(Task.Factory.StartNew(consumerB.Run));
 
-//            Application.Run(new BufferWindow<int>(collectionA));
-//            Application.Run(new WorkerWindow(producer));
-//            tasks.Add(Task.Factory.StartNew(() => Application.Run(new WorkerWindow(producer))));
-//            Task task = new Task();
-//            task.Set
-//            Thread t = new Thread(() => Application.Run(new WorkerWindow(producer)));
-//            t.SetApartmentState(ApartmentState.STA);
-//            t.Start();
-
-//            startForm(new WorkerWindow(producer));
-//            startForm(new WorkerWindow(producer));
-//            while (true) ;
-
-            //TODO: "Use thread pools in mains"
             Task.WaitAll(tasks.ToArray());
         }
 
