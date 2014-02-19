@@ -21,8 +21,8 @@ namespace ProducerCustomer
 //            MiddleMan middleman = new MiddleMan(firstCollection, secondCollection);
 //            FilterWorker filterWorker = new FilterWorker(firstCollection, secondCollection, IsEven);
 //            BlockingCollection<int>[] c = ;
-            Duplicator duplicator = new Duplicator(collectionA, new BlockingCollection<int>[] {collectionB, collectionC});
-//            DivideWorker divideWorker = new DivideWorker();
+//            Duplicator duplicator = new Duplicator(collectionA, new BlockingCollection<int>[] {collectionB, collectionC});
+            DivideWorker divideWorker = new DivideWorker(collectionA, new BlockingCollection<int>[] { collectionB, collectionC }, IntMod2);
             Consumer consumer = new Consumer(collectionB);
             Consumer consumer2 = new Consumer(collectionC);
 
@@ -30,7 +30,7 @@ namespace ProducerCustomer
             tasks.Add(Task.Factory.StartNew(producer.Run));
 //            tasks.Add(Task.Factory.StartNew(middleman.Run));
 //            tasks.Add(Task.Factory.StartNew(filterWorker.Run));
-            duplicator.Run();
+            divideWorker.Run();
 
             Thread.Sleep(50);
             Console.WriteLine("A");
@@ -45,13 +45,12 @@ namespace ProducerCustomer
 
         static bool IsEven(int number)
         {
-            return number%2 == 0;
+            return number % 2 == 0;
         }
 
-        static int IntGetHashCode(int number)
+        static int IntMod2(int number)
         {
-            //TODO: implement
-            return number % 3;
+            return number % 2;
         }
     }
 }

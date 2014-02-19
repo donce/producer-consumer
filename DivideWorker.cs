@@ -10,12 +10,11 @@ namespace ProducerCustomer
 {
     class DivideWorker
     {
-        public delegate int HashDelegate(int value);
-
-        private BlockingCollection<int> _collectionIn;
-        private BlockingCollection<int>[] _collectionsOut;
-        private HashDelegate _hashFunction;
-
+        public delegate int HashDelegate(int item);
+        
+        private readonly BlockingCollection<int> _collectionIn;
+        private readonly BlockingCollection<int>[] _collectionsOut;
+        private readonly HashDelegate _hashFunction;
 
         public DivideWorker(BlockingCollection<int> collectionIn, BlockingCollection<int>[] collectionsOut, HashDelegate hashFunction)
         {
@@ -26,15 +25,24 @@ namespace ProducerCustomer
 
         public void Run()
         {
-            int item;
-            do
+            while (!_collectionIn.IsCompleted)
             {
-                item = _collectionIn.Take();
-                int index = _hashFunction(item);
-                if (index < 0 || index >= _collectionsOut.Length)
-                    throw new Exception();
-                _collectionsOut[index].Add(item);
-            } while (item != Producer.LastElement);
+                try
+                {
+                    int item = _collectionIn.Take();
+                    int index = _hashFunction(item);
+                    if (index < 0 || index >= _collectionsOut.Length)
+                        throw new Exception();
+                    _collectionsOut[index].Add(item);
+                }
+                catch (InvalidOperationException)
+                {
+                }
+            }
+            foreach (BlockingCollection<int> collection in _collectionsOut)
+            {
+                collection.CompleteAdding();
+            }
         }
     }
 }
