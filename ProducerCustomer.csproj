@@ -41,16 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractBuffer.cs" />
     <Compile Include="DivideWorker.cs" />
     <Compile Include="FilterWorker.cs" />
-    <Compile Include="IPutBuffer.cs" />
-    <Compile Include="ITakeBuffer.cs" />
-    <Compile Include="UnboundedBuffer.cs" />
-    <Compile Include="BoundedBuffer.cs" />
     <Compile Include="Consumer.cs" />
     <Compile Include="Duplicator.cs" />
-    <Compile Include="IBuffer.cs" />
     <Compile Include="MiddleMan.cs" />
     <Compile Include="Producer.cs" />
     <Compile Include="Program.cs" />

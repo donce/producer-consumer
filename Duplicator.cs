@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class Duplicator
+    class Duplicator<T>
     {
-        private BlockingCollection<int> _collectionIn;
-        private BlockingCollection<int>[] _collectionsOut;
+        private BlockingCollection<T> _collectionIn;
+        private BlockingCollection<T>[] _collectionsOut;
 
-        public Duplicator(BlockingCollection<int> collectionIn, BlockingCollection<int>[] collectionsOut)
+        public Duplicator(BlockingCollection<T> collectionIn, BlockingCollection<T>[] collectionsOut)
         {
             _collectionIn = collectionIn;
             _collectionsOut = collectionsOut;
@@ -24,8 +24,8 @@ namespace ProducerCustomer
             {
                 try
                 {
-                    int item = _collectionIn.Take();
-                    foreach (BlockingCollection<int> collection in _collectionsOut)
+                    T item = _collectionIn.Take();
+                    foreach (BlockingCollection<T> collection in _collectionsOut)
                     {
                         collection.Add(item);
                     }
@@ -34,7 +34,7 @@ namespace ProducerCustomer
                 {
                 }
             }
-            foreach (BlockingCollection<int> collection in _collectionsOut)
+            foreach (BlockingCollection<T> collection in _collectionsOut)
             {
                 collection.CompleteAdding();
             }

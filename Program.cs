@@ -22,21 +22,21 @@ namespace ProducerCustomer
 //            FilterWorker filterWorker = new FilterWorker(firstCollection, secondCollection, IsEven);
 //            BlockingCollection<int>[] c = ;
 //            Duplicator duplicator = new Duplicator(collectionA, new BlockingCollection<int>[] {collectionB, collectionC});
-            DivideWorker divideWorker = new DivideWorker(collectionA, new BlockingCollection<int>[] { collectionB, collectionC }, IntMod2);
-            Consumer consumer = new Consumer(collectionB);
-            Consumer consumer2 = new Consumer(collectionC);
+            DivideWorker<int> divideWorker = new DivideWorker<int>(collectionA, new BlockingCollection<int>[] { collectionB, collectionC }, IntMod2);
+            Consumer<int> consumer = new Consumer<int>(collectionA);
+            Consumer<int> consumer2 = new Consumer<int>(collectionC);
 
             List<Task> tasks = new List<Task>();
-            tasks.Add(Task.Factory.StartNew(producer.Run));
+//            tasks.Add(Task.Factory.StartNew(producer.Run));
 //            tasks.Add(Task.Factory.StartNew(middleman.Run));
 //            tasks.Add(Task.Factory.StartNew(filterWorker.Run));
-            divideWorker.Run();
+//            divideWorker.Run();
 
-            Thread.Sleep(50);
+            producer.Run();
             Console.WriteLine("A");
             consumer.Run();
-            Console.WriteLine("B");
-            consumer2.Run();
+//            Console.WriteLine("B");
+//            consumer2.Run();
 //            tasks.Add(Task.Factory.StartNew(consumer2.Run));
 
             //TODO: "Use thread pools in mains"

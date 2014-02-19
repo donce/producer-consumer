@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class MiddleMan
+    class MiddleMan<T>
     {
-        private BlockingCollection<int> _collectionIn, _collectionOut;
+        private BlockingCollection<T> _collectionIn, _collectionOut;
 
-        public MiddleMan(BlockingCollection<int> collectionIn, BlockingCollection<int> collectionOut)
+        public MiddleMan(BlockingCollection<T> collectionIn, BlockingCollection<T> collectionOut)
         {
             _collectionIn = collectionIn;
             _collectionOut = collectionOut;
@@ -23,7 +23,7 @@ namespace ProducerCustomer
             {
                 try
                 {
-                    int item = _collectionIn.Take();
+                    T item = _collectionIn.Take();
                     _collectionOut.Add(item);
                     Console.WriteLine("Take {0}.", item);
                 }

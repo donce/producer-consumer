@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class FilterWorker
+    class FilterWorker<T>
     {
-        private BlockingCollection<int> _collectionIn, _collectionOut;
-        private Predicate<int> _filter; 
+        private BlockingCollection<T> _collectionIn, _collectionOut;
+        private Predicate<T> _filter; 
         
-        public FilterWorker(BlockingCollection<int> collectionIn, BlockingCollection<int> collectionOut, Predicate<int> filter)
+        public FilterWorker(BlockingCollection<T> collectionIn, BlockingCollection<T> collectionOut, Predicate<T> filter)
         {
             _collectionIn = collectionIn;
             _collectionOut = collectionOut;
@@ -25,7 +25,7 @@ namespace ProducerCustomer
             {
                 try
                 {
-                    int item = _collectionIn.Take();
+                    T item = _collectionIn.Take();
                     if (_filter(item))
                         _collectionOut.Add(item);
                     Console.WriteLine("Take {0}.", item);

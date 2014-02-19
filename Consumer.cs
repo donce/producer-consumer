@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class Consumer
+    class Consumer<T>
     {
-        private readonly BlockingCollection<int> _collection;
+        private readonly BlockingCollection<T> _collection;
         
-        public Consumer(BlockingCollection<int> collection)
+        public Consumer(BlockingCollection<T> collection)
         {
             if (collection == null)
                 throw new ArgumentNullException();
@@ -24,7 +24,7 @@ namespace ProducerCustomer
             {
                 try
                 {
-                    int item = _collection.Take();
+                    T item = _collection.Take();
                     Console.WriteLine("Take {0}.", item);
                 }
                 catch (InvalidOperationException) { }

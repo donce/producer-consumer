@@ -9,8 +9,6 @@ namespace ProducerCustomer
 {
     class Producer
     {
-        public static int LastElement = -1;
-
         private BlockingCollection<int> _collection;
         private int _howMany;
 
