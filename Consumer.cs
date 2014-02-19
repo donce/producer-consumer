@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class Consumer<T>
+    class Consumer<T> : Worker
     {
         private readonly BlockingCollection<T> _collection;
         
-        public Consumer(BlockingCollection<T> collection)
+        public Consumer(BlockingCollection<T> collection) : base("Consumer")
         {
             if (collection == null)
                 throw new ArgumentNullException();
             _collection = collection;
         }
 
-        public void Run()
+        public override void Run()
         {
             while (!_collection.IsCompleted)
             {

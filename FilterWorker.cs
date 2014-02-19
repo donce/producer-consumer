@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class FilterWorker<T>
+    class FilterWorker<T> : Worker
     {
         private BlockingCollection<T> _collectionIn, _collectionOut;
         private Predicate<T> _filter; 
         
-        public FilterWorker(BlockingCollection<T> collectionIn, BlockingCollection<T> collectionOut, Predicate<T> filter)
+        public FilterWorker(BlockingCollection<T> collectionIn, BlockingCollection<T> collectionOut, Predicate<T> filter) : base("Filter worker")
         {
             _collectionIn = collectionIn;
             _collectionOut = collectionOut;
             _filter = filter;
         }
 
-        public void Run()
+        public override void Run()
         {
             while (!_collectionIn.IsCompleted)
             {

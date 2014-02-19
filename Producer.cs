@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class Producer
+    class Producer : Worker
     {
         private BlockingCollection<int> _collection;
         private int _howMany;
 
-        public Producer(BlockingCollection<int> collection, int howMany)
+        public Producer(BlockingCollection<int> collection, int howMany) : base("Producer")
         {
             if (collection == null)
                 throw new ArgumentNullException("collection");
@@ -22,7 +22,7 @@ namespace ProducerCustomer
             _howMany = howMany;
         }
 
-        public void Run()
+        public override void Run()
         {
             for (int i = 1; i <= _howMany; ++i)
             {
