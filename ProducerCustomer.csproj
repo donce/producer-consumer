@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractBuffer.cs" />
+    <Compile Include="DivideWorker.cs" />
     <Compile Include="FilterWorker.cs" />
     <Compile Include="IPutBuffer.cs" />
     <Compile Include="ITakeBuffer.cs" />

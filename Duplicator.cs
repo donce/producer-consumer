@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,26 +9,35 @@ namespace ProducerCustomer
 {
     class Duplicator
     {
-        private IBuffer _bufferIn;
-        private IBuffer[] _buffersOut;
+        private BlockingCollection<int> _collectionIn;
+        private BlockingCollection<int>[] _collectionsOut;
 
-        public Duplicator(IBuffer bufferIn, IBuffer[] buffersOut)
+        public Duplicator(BlockingCollection<int> collectionIn, BlockingCollection<int>[] collectionsOut)
         {
-            _bufferIn = bufferIn;
-            _buffersOut = buffersOut;
+            _collectionIn = collectionIn;
+            _collectionsOut = collectionsOut;
         }
 
         public void Run()
         {
-            int item;
-            do
+            while (!_collectionIn.IsCompleted)
             {
-                item = _bufferIn.Take();
-                foreach (IBuffer buffer in _buffersOut)
+                try
                 {
-                    buffer.Put(item);
+                    int item = _collectionIn.Take();
+                    foreach (BlockingCollection<int> collection in _collectionsOut)
+                    {
+                        collection.Add(item);
+                    }
                 }
-            } while (item != Producer.LastElement);
+                catch (InvalidOperationException)
+                {
+                }
+            }
+            foreach (BlockingCollection<int> collection in _collectionsOut)
+            {
+                collection.CompleteAdding();
+            }
         }
     }
 }
