@@ -14,8 +14,8 @@ namespace ProducerCustomer
 {
     public partial class BufferWindow<T> : Form
     {
-        private BlockingCollection<T> collection; 
-        public BufferWindow(BlockingCollection<T> collection)
+        private Buffer<T> collection; 
+        public BufferWindow(Buffer<T> collection)
         {
             this.collection = collection;
             InitializeComponent();

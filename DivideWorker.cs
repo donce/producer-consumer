@@ -12,11 +12,11 @@ namespace ProducerCustomer
     {
         public delegate int HashDelegate(T item);
         
-        private readonly BlockingCollection<T> _collectionIn;
-        private readonly BlockingCollection<T>[] _collectionsOut;
+        private readonly Buffer<T> _collectionIn;
+        private readonly Buffer<T>[] _collectionsOut;
         private readonly HashDelegate _hashFunction;
 
-        public DivideWorker(BlockingCollection<T> collectionIn, BlockingCollection<T>[] collectionsOut, HashDelegate hashFunction)
+        public DivideWorker(Buffer<T> collectionIn, Buffer<T>[] collectionsOut, HashDelegate hashFunction)
         {
             _collectionIn = collectionIn;
             _collectionsOut = collectionsOut;
@@ -39,7 +39,7 @@ namespace ProducerCustomer
                 {
                 }
             }
-            foreach (BlockingCollection<T> collection in _collectionsOut)
+            foreach (Buffer<T> collection in _collectionsOut)
             {
                 collection.CompleteAdding();
             }

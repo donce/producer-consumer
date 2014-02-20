@@ -9,10 +9,10 @@ namespace ProducerCustomer
 {
     class Producer : Worker
     {
-        private BlockingCollection<int> _collection;
+        private Buffer<int> _collection;
         private int _howMany;
 
-        public Producer(BlockingCollection<int> collection, int howMany) : base("Producer")
+        public Producer(Buffer<int> collection, int howMany) : base("Producer")
         {
             if (collection == null)
                 throw new ArgumentNullException("collection");

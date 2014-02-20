@@ -9,9 +9,9 @@ namespace ProducerCustomer
 {
     class Consumer<T> : Worker
     {
-        private readonly BlockingCollection<T> _collection;
+        private readonly Buffer<T> _collection;
         
-        public Consumer(BlockingCollection<T> collection) : base("Consumer")
+        public Consumer(Buffer<T> collection) : base("Consumer")
         {
             if (collection == null)
                 throw new ArgumentNullException();

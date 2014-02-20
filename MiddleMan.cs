@@ -9,9 +9,9 @@ namespace ProducerCustomer
 {
     class MiddleMan<T>
     {
-        private BlockingCollection<T> _collectionIn, _collectionOut;
+        private Buffer<T> _collectionIn, _collectionOut;
 
-        public MiddleMan(BlockingCollection<T> collectionIn, BlockingCollection<T> collectionOut)
+        public MiddleMan(Buffer<T> collectionIn, Buffer<T> collectionOut)
         {
             _collectionIn = collectionIn;
             _collectionOut = collectionOut;

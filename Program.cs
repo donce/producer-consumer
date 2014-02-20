@@ -18,17 +18,17 @@ namespace ProducerCustomer
         [STAThread]
         static void Main(string[] args)
         {
-            BlockingCollection<int> collectionA = new BlockingCollection<int>();
-//            BlockingCollection<int> collectionB = new BlockingCollection<int>();
-//            BlockingCollection<int> collectionC = new BlockingCollection<int>();
-//            BlockingCollection<int> collectionD = new BlockingCollection<int>();
+            Buffer<int> collectionA = new Buffer<int>();
+            Buffer<int> collectionB = new Buffer<int>();
+//            Buffer<int> collectionC = new Buffer<int>();
+//            Buffer<int> collectionD = new Buffer<int>();
 
             showCollection(collectionA);
-//            showCollection(collectionB);
+            showCollection(collectionB);
 
             startWorker(new Producer(collectionA, 10));
-//            startWorker(new FilterWorker<int>(collectionA, collectionB, IsPrime));
-//            startWorker(new DivideWorker<int>(collectionB, new BlockingCollection<int>[] { collectionC, collectionD }, IntMod2));
+            startWorker(new FilterWorker<int>(collectionA, collectionB, IsPrime));
+//            startWorker(new DivideWorker<int>(collectionB, new Buffer<int>[] { collectionC, collectionD }, IntMod2));
 //            startWorker(new Consumer<int>(collectionC));
 //            startWorker(new Consumer<int>(collectionD));
 
@@ -41,7 +41,7 @@ namespace ProducerCustomer
             startForm(new WorkerWindow(worker));
         }
 
-        static void showCollection<T>(BlockingCollection<T> collection)
+        static void showCollection<T>(Buffer<T> collection)
         {
             startForm(new BufferWindow<T>(collection));
         }

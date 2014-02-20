@@ -9,10 +9,10 @@ namespace ProducerCustomer
 {
     class FilterWorker<T> : Worker
     {
-        private BlockingCollection<T> _collectionIn, _collectionOut;
+        private Buffer<T> _collectionIn, _collectionOut;
         private Predicate<T> _filter; 
         
-        public FilterWorker(BlockingCollection<T> collectionIn, BlockingCollection<T> collectionOut, Predicate<T> filter) : base("Filter worker")
+        public FilterWorker(Buffer<T> collectionIn, Buffer<T> collectionOut, Predicate<T> filter) : base("Filter worker")
         {
             _collectionIn = collectionIn;
             _collectionOut = collectionOut;
