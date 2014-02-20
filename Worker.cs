@@ -19,6 +19,20 @@ namespace ProducerCustomer
 
         public State state = State.Ready;
 
+        public string stateTitle
+        {
+            get
+            {
+                if (state == State.Ready)
+                    return "Ready";
+                if (state == State.Working)
+                    return "Working";
+                if (state == State.Complete)
+                    return "Complete";
+                return "";
+            }
+        }
+
         public String name
         {
             get { return _name; }

@@ -25,16 +25,15 @@ namespace ProducerCustomer
         {
             while (true)
             {
-                T[] array = collection.ToArray();
+                String text = "";
+                foreach (T item in collection.ToArray())
+                {
+                    text += (text != "" ? " " : "") + item;
+                }
                 try
                 {
                     this.Invoke((MethodInvoker) delegate
                     {
-                        String text = "";
-                        foreach (T item in array)
-                        {
-                            text += (text != "" ? " " : "") + item;
-                        }
                         if (label1.Text != text)
                             label1.Text = text;
                     });

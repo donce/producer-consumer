@@ -13,19 +13,29 @@ namespace ProducerCustomer
     public partial class WorkerWindow : Form
     {
         private Worker worker;
+        private Worker.State lastState;
+
         public WorkerWindow(Worker worker)
         {
             if (worker == null)
                 throw new ArgumentNullException("worker");
             this.worker = worker;
             InitializeComponent();
-            label1.Text = worker.name;
+            nameLabel.Text = worker.name;
         }
 
         private void updateWindow()
         {
             while (true)
             {
+                if (worker.state != lastState)
+                {
+                    this.Invoke((MethodInvoker) delegate
+                    {
+                        stateLabel.Text = worker.stateTitle;
+                    });
+                    lastState = worker.state;
+                }
             }
         }
 
