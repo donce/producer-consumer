@@ -45,7 +45,6 @@
             this.label1.Size = new System.Drawing.Size(284, 39);
             this.label1.TabIndex = 0;
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // pictureBox1
             // 
@@ -66,6 +65,7 @@
             this.Controls.Add(this.label1);
             this.Name = "WorkerWindow";
             this.Text = "Worker";
+            this.Load += new System.EventHandler(this.WorkerWindow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 

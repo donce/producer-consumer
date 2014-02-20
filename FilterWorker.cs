@@ -19,7 +19,7 @@ namespace ProducerCustomer
             _filter = filter;
         }
 
-        public override void Run()
+        protected override void Run()
         {
             while (!_collectionIn.IsCompleted)
             {

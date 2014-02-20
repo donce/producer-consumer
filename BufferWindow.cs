@@ -21,7 +21,7 @@ namespace ProducerCustomer
             InitializeComponent();
         }
 
-        public void updateWindow()
+        private void updateWindow()
         {
             while (true)
             {

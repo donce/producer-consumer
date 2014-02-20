@@ -10,6 +10,15 @@ namespace ProducerCustomer
     {
         private readonly String _name;
 
+        public enum State
+        {
+            Ready,
+            Working,
+            Complete,
+        };
+
+        public State state = State.Ready;
+
         public String name
         {
             get { return _name; }
@@ -20,6 +29,13 @@ namespace ProducerCustomer
             _name = name;
         }
 
-        public abstract void Run();
+        protected abstract void Run();
+
+        public void Start()
+        {
+            state = State.Working;
+            Run();
+            state = State.Complete;
+        }
     }
 }

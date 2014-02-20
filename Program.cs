@@ -37,7 +37,7 @@ namespace ProducerCustomer
 
         static void startWorker(Worker worker)
         {
-            tasks.Add(Task.Factory.StartNew(worker.Run));
+            tasks.Add(Task.Factory.StartNew(worker.Start));
             startForm(new WorkerWindow(worker));
         }
 

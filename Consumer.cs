@@ -18,7 +18,7 @@ namespace ProducerCustomer
             _collection = collection;
         }
 
-        public override void Run()
+        protected override void Run()
         {
             while (!_collection.IsCompleted)
             {

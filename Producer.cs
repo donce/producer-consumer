@@ -22,7 +22,7 @@ namespace ProducerCustomer
             _howMany = howMany;
         }
 
-        public override void Run()
+        protected override void Run()
         {
             for (int i = 1; i <= _howMany; ++i)
             {

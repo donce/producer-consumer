@@ -12,19 +12,26 @@ namespace ProducerCustomer
 {
     public partial class WorkerWindow : Form
     {
-        private Worker _worker;
+        private Worker worker;
         public WorkerWindow(Worker worker)
         {
             if (worker == null)
                 throw new ArgumentNullException("worker");
-            _worker = worker;
+            this.worker = worker;
             InitializeComponent();
             label1.Text = worker.name;
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void updateWindow()
         {
+            while (true)
+            {
+            }
+        }
 
+        private void WorkerWindow_Load(object sender, EventArgs e)
+        {
+            Task.Factory.StartNew(updateWindow);
         }
     }
 }
