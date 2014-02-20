@@ -21,5 +21,10 @@ namespace ProducerCustomer
             InitializeComponent();
             label1.Text = worker.name;
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

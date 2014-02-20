@@ -13,36 +13,31 @@ namespace ProducerCustomer
 {
     class Program
     {
+        private static List<Task> tasks = new List<Task>();
+            
         [STAThread]
         static void Main(string[] args)
         {
             BlockingCollection<int> collectionA = new BlockingCollection<int>();
-            BlockingCollection<int> collectionB = new BlockingCollection<int>();
+//            BlockingCollection<int> collectionB = new BlockingCollection<int>();
 //            BlockingCollection<int> collectionC = new BlockingCollection<int>();
 //            BlockingCollection<int> collectionD = new BlockingCollection<int>();
 
             showCollection(collectionA);
-            showCollection(collectionB);
+//            showCollection(collectionB);
 
             startWorker(new Producer(collectionA, 10));
-            startWorker(new FilterWorker<int>(collectionA, collectionB, IsPrime));
-//            DivideWorker<int> divideWorker = new DivideWorker<int>(collectionB, new BlockingCollection<int>[] { collectionC, collectionD }, IntMod2);
-//            Consumer<int> consumerA = new Consumer<int>(collectionC);
-//            Consumer<int> consumerB = new Consumer<int>(collectionD);
-
-            List<Task> tasks = new List<Task>();
-//            tasks.Add(Task.Factory.StartNew(producer.Run));
-//            tasks.Add(Task.Factory.StartNew(filterWorker.Run));
-//            tasks.Add(Task.Factory.StartNew(divideWorker.Run));
-//            tasks.Add(Task.Factory.StartNew(consumerA.Run));
-//            tasks.Add(Task.Factory.StartNew(consumerB.Run));
+//            startWorker(new FilterWorker<int>(collectionA, collectionB, IsPrime));
+//            startWorker(new DivideWorker<int>(collectionB, new BlockingCollection<int>[] { collectionC, collectionD }, IntMod2));
+//            startWorker(new Consumer<int>(collectionC));
+//            startWorker(new Consumer<int>(collectionD));
 
             Task.WaitAll(tasks.ToArray());
         }
 
         static void startWorker(Worker worker)
         {
-            Task.Factory.StartNew(worker.Run);
+            tasks.Add(Task.Factory.StartNew(worker.Run));
             startForm(new WorkerWindow(worker));
         }
 
