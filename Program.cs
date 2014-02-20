@@ -13,40 +13,57 @@ namespace ProducerCustomer
 {
     class Program
     {
+        private static List<Worker> workers = new List<Worker>();
         private static List<Task> tasks = new List<Task>();
-            
+        
         [STAThread]
         static void Main(string[] args)
         {
             Buffer<int> collectionA = new Buffer<int>();
             Buffer<int> collectionB = new Buffer<int>();
-//            Buffer<int> collectionC = new Buffer<int>();
-//            Buffer<int> collectionD = new Buffer<int>();
+            //            Buffer<int> collectionC = new Buffer<int>();
+            //            Buffer<int> collectionD = new Buffer<int>();
 
-            showCollection(collectionA);
-            showCollection(collectionB);
+            ShowCollection(collectionA);
+            ShowCollection(collectionB);
 
-            startWorker(new Producer(collectionA, 10));
-            startWorker(new FilterWorker<int>(collectionA, collectionB, IsPrime));
-//            startWorker(new DivideWorker<int>(collectionB, new Buffer<int>[] { collectionC, collectionD }, IntMod2));
-//            startWorker(new Consumer<int>(collectionC));
-//            startWorker(new Consumer<int>(collectionD));
+            AddWorker(new Producer(collectionA, 10));
+            AddWorker(new FilterWorker<int>(collectionA, collectionB, IsPrime));
+            //            AddWorker(new DivideWorker<int>(collectionB, new Buffer<int>[] { collectionC, collectionD }, IntMod2));
+            //            AddWorker(new Consumer<int>(collectionC));
+            //            AddWorker(new Consumer<int>(collectionD));
 
-            Task.WaitAll(tasks.ToArray());
+
+            StartForm(new ControlWindow());
         }
 
-        static void startWorker(Worker worker)
+        public static void Start()
         {
-            tasks.Add(Task.Factory.StartNew(worker.Start));
-            startForm(new WorkerWindow(worker));
+            StartWorkers();
+//            Task.WaitAll(tasks.ToArray());
         }
 
-        static void showCollection<T>(Buffer<T> collection)
+        static void AddWorker(Worker worker)
         {
-            startForm(new BufferWindow<T>(collection));
+            workers.Add(worker);
+//            tasks.Add(Task.Factory.StartNew(worker.Start));
+            StartForm(new WorkerWindow(worker));
         }
 
-        static Thread startForm(Form form)
+        static void StartWorkers()
+        {
+            foreach (Worker worker in workers)
+            {
+                tasks.Add(Task.Factory.StartNew(worker.Start));
+            }
+        }
+
+        static void ShowCollection<T>(Buffer<T> collection)
+        {
+            StartForm(new BufferWindow<T>(collection));
+        }
+
+        static Thread StartForm(Form form)
         {
             Thread thread = new Thread(() => Application.Run(form));
             thread.SetApartmentState(ApartmentState.STA);
