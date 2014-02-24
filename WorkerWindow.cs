@@ -22,7 +22,8 @@ namespace ProducerCustomer
                 throw new ArgumentNullException("worker");
             this.worker = worker;
             InitializeComponent();
-            nameLabel.Text = worker.name;
+            this.Text = worker.name;
+//            nameLabel.Text = worker.name;
         }
 
         private void updateWindow()

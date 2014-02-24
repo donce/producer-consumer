@@ -27,7 +27,7 @@ namespace ProducerCustomer
             while (true)
             {
                 String text = "";
-                foreach (T item in collection.ToArray())
+                foreach (T item in collection.ToArray().Reverse())
                 {
                     text += (text != "" ? " " : "") + item;
                 }

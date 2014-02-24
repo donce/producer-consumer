@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class MiddleMan<T>
+    class MiddleMan<T> : Worker
     {
         private Buffer<T> _collectionIn, _collectionOut;
 
-        public MiddleMan(Buffer<T> collectionIn, Buffer<T> collectionOut)
+        public MiddleMan(Buffer<T> collectionIn, Buffer<T> collectionOut) : base("Middle man")
         {
             _collectionIn = collectionIn;
             _collectionOut = collectionOut;
         }
 
-        public void Run()
+        protected override void Run()
         {
             while (!_collectionIn.IsCompleted)
             {

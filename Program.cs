@@ -26,12 +26,12 @@ namespace ProducerCustomer
 
             ShowCollection(collectionA);
             ShowCollection(collectionB);
-            ShowCollection(collectionC);
-            ShowCollection(collectionD);
+//            ShowCollection(collectionC);
+//            ShowCollection(collectionD);
 
             AddWorker(new Producer(collectionA, 30));
             AddWorker(new FilterWorker<int>(collectionA, collectionB, IsPrime));
-            AddWorker(new DivideWorker<int>(collectionB, new Buffer<int>[] { collectionC, collectionD }, IntMod2));
+//            AddWorker(new DivideWorker<int>(collectionB, new Buffer<int>[] { collectionC, collectionD }, IntMod2));
 //            AddWorker(new Consumer<int>(collectionC));
 //            AddWorker(new Consumer<int>(collectionD));
 
