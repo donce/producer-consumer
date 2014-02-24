@@ -27,7 +27,6 @@ namespace ProducerCustomer
             for (int i = 1; i <= _howMany; ++i)
             {
                 _collection.Add(i);
-                Console.WriteLine("Put {0}.", i);
             }
             _collection.CompleteAdding();
         }

@@ -41,6 +41,7 @@ namespace ProducerCustomer
 
         protected Worker(String name)
         {
+            Program.log.Info("Creating worker: " + name);
             _name = name;
         }
 
@@ -48,9 +49,11 @@ namespace ProducerCustomer
 
         public void Start()
         {
+            Program.log.Info("Starting worker: " + name);
             state = State.Working;
             Run();
             state = State.Complete;
+            Program.log.Info("Worker completed work: " + name);
         }
     }
 }

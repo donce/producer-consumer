@@ -25,7 +25,6 @@ namespace ProducerCustomer
                 {
                     T item = _collectionIn.Take();
                     _collectionOut.Add(item);
-                    Console.WriteLine("Take {0}.", item);
                 }
                 catch (InvalidOperationException) { }
             }

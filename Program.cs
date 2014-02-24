@@ -8,6 +8,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using log4net;
+using log4net.Appender;
+using log4net.Config;
+using log4net.Core;
 
 namespace ProducerCustomer
 {
@@ -15,10 +19,21 @@ namespace ProducerCustomer
     {
         private static List<Worker> workers = new List<Worker>();
         private static List<Task> tasks = new List<Task>();
-        
+
+        public static readonly ILog log = LogManager.GetLogger("Main logger");
+
         [STAThread]
         static void Main(string[] args)
         {
+            BasicConfigurator.Configure();
+            log.Info("Program started");
+
+//            ConsoleAppender appender = new ConsoleAppender();
+//            LoggingEventData data = new LoggingEventData();
+//            LoggingEvent myEvent = new LoggingEvent(data);
+//            appender.DoAppend(myEvent);
+//            ILog logger = 
+
             Buffer<int> collectionA = new Buffer<int>("First");
             Buffer<int> collectionB = new Buffer<int>("Second");
             Buffer<int> collectionC = new Buffer<int>("Third");
@@ -53,6 +68,7 @@ namespace ProducerCustomer
 
         static void StartWorkers()
         {
+            log.Info("Workers starting...");
             foreach (Worker worker in workers)
             {
                 tasks.Add(Task.Factory.StartNew(worker.Start));
@@ -66,6 +82,7 @@ namespace ProducerCustomer
 
         static Thread StartForm(Form form)
         {
+            log.Info("Form starting...");
             Thread thread = new Thread(() => Application.Run(form));
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
