@@ -10,6 +10,18 @@ namespace ProducerCustomer
 {
     public class Buffer<T> : BlockingCollection<T>
     {
+        protected string _name;
+
+        public string Name
+        {
+            get { return _name; }
+        }
+
+        public Buffer(string name)
+        {
+            _name = name;
+        }
+
         public new void Add(T item)
         {
             Thread.Sleep(1000);
@@ -18,8 +30,9 @@ namespace ProducerCustomer
 
         public new T Take()
         {
+            T item = base.Take();
             Thread.Sleep(1000);
-            return base.Take();
+            return item;
         }
     }
 }

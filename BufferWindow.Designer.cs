@@ -47,6 +47,7 @@
             this.ClientSize = new System.Drawing.Size(384, 61);
             this.Controls.Add(this.label1);
             this.Name = "BufferWindow";
+            this.ShowInTaskbar = false;
             this.Text = "BufferWindow";
             this.Load += new System.EventHandler(this.BufferWindow_Load);
             this.ResumeLayout(false);

@@ -19,6 +19,7 @@ namespace ProducerCustomer
         {
             this.collection = collection;
             InitializeComponent();
+            this.Text = collection.Name;
         }
 
         private void updateWindow()

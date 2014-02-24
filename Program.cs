@@ -19,8 +19,8 @@ namespace ProducerCustomer
         [STAThread]
         static void Main(string[] args)
         {
-            Buffer<int> collectionA = new Buffer<int>();
-            Buffer<int> collectionB = new Buffer<int>();
+            Buffer<int> collectionA = new Buffer<int>("First");
+            Buffer<int> collectionB = new Buffer<int>("Second");
             //            Buffer<int> collectionC = new Buffer<int>();
             //            Buffer<int> collectionD = new Buffer<int>();
 
