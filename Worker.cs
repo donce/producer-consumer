@@ -12,6 +12,7 @@ namespace ProducerCustomer
 
         public enum State
         {
+            New,
             Ready,
             Working,
             Complete,

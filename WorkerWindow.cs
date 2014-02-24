@@ -14,7 +14,7 @@ namespace ProducerCustomer
     public partial class WorkerWindow : Form
     {
         private Worker worker;
-        private Worker.State lastState;
+        private Worker.State lastState = Worker.State.New;
 
         public WorkerWindow(Worker worker)
         {
@@ -31,10 +31,17 @@ namespace ProducerCustomer
             {
                 if (worker.state != lastState)
                 {
-                    this.Invoke((MethodInvoker) delegate
+                    try
                     {
-                        stateLabel.Text = worker.stateTitle;
-                    });
+                        this.Invoke((MethodInvoker)delegate
+                        {
+                            stateLabel.Text = worker.stateTitle;
+                        });
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        return;
+                    }
                     lastState = worker.state;
                 }
                 Thread.Sleep(200);

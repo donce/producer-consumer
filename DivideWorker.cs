@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class DivideWorker<T>
+    class DivideWorker<T> : Worker
     {
         public delegate int HashDelegate(T item);
         
@@ -16,14 +16,14 @@ namespace ProducerCustomer
         private readonly Buffer<T>[] _collectionsOut;
         private readonly HashDelegate _hashFunction;
 
-        public DivideWorker(Buffer<T> collectionIn, Buffer<T>[] collectionsOut, HashDelegate hashFunction)
+        public DivideWorker(Buffer<T> collectionIn, Buffer<T>[] collectionsOut, HashDelegate hashFunction) : base("Divide Worker")
         {
             _collectionIn = collectionIn;
             _collectionsOut = collectionsOut;
             _hashFunction = hashFunction;
         }
 
-        public void Run()
+        protected override void Run()
         {
             while (!_collectionIn.IsCompleted)
             {

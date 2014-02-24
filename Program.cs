@@ -21,17 +21,19 @@ namespace ProducerCustomer
         {
             Buffer<int> collectionA = new Buffer<int>("First");
             Buffer<int> collectionB = new Buffer<int>("Second");
-            //            Buffer<int> collectionC = new Buffer<int>();
-            //            Buffer<int> collectionD = new Buffer<int>();
+            Buffer<int> collectionC = new Buffer<int>("Third");
+            Buffer<int> collectionD = new Buffer<int>("Fourth");
 
             ShowCollection(collectionA);
             ShowCollection(collectionB);
+            ShowCollection(collectionC);
+            ShowCollection(collectionD);
 
-            AddWorker(new Producer(collectionA, 10));
+            AddWorker(new Producer(collectionA, 30));
             AddWorker(new FilterWorker<int>(collectionA, collectionB, IsPrime));
-            //            AddWorker(new DivideWorker<int>(collectionB, new Buffer<int>[] { collectionC, collectionD }, IntMod2));
-            //            AddWorker(new Consumer<int>(collectionC));
-            //            AddWorker(new Consumer<int>(collectionD));
+            AddWorker(new DivideWorker<int>(collectionB, new Buffer<int>[] { collectionC, collectionD }, IntMod2));
+//            AddWorker(new Consumer<int>(collectionC));
+//            AddWorker(new Consumer<int>(collectionD));
 
 
             StartForm(new ControlWindow());
@@ -46,7 +48,6 @@ namespace ProducerCustomer
         static void AddWorker(Worker worker)
         {
             workers.Add(worker);
-//            tasks.Add(Task.Factory.StartNew(worker.Start));
             StartForm(new WorkerWindow(worker));
         }
 

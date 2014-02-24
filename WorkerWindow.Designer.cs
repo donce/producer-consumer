@@ -64,7 +64,6 @@
             this.stateLabel.Name = "stateLabel";
             this.stateLabel.Size = new System.Drawing.Size(291, 44);
             this.stateLabel.TabIndex = 2;
-            this.stateLabel.Text = "label2";
             this.stateLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // WorkerWindow
