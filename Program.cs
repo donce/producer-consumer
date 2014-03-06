@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -20,12 +21,16 @@ namespace ProducerCustomer
         private static List<Worker> workers = new List<Worker>();
         private static List<Task> tasks = new List<Task>();
 
-        public static readonly ILog log = LogManager.GetLogger("Main logger");
+        public static readonly ILog log = LogManager.GetLogger(typeof(Program));
 
         [STAThread]
         static void Main(string[] args)
         {
-            BasicConfigurator.Configure();
+//            FileInfo fileInfo = ;
+            FileInfo info = new FileInfo(@"../../logconfig.xml");
+            Console.WriteLine(info);
+            XmlConfigurator.Configure(info);
+//            BasicConfigurator.Configure();
             log.Info("Program started");
 
 //            ConsoleAppender appender = new ConsoleAppender();
@@ -41,12 +46,12 @@ namespace ProducerCustomer
 
             ShowCollection(collectionA);
             ShowCollection(collectionB);
-//            ShowCollection(collectionC);
-//            ShowCollection(collectionD);
+            ShowCollection(collectionC);
+            ShowCollection(collectionD);
 
             AddWorker(new Producer(collectionA, 30));
             AddWorker(new FilterWorker<int>(collectionA, collectionB, IsPrime));
-//            AddWorker(new DivideWorker<int>(collectionB, new Buffer<int>[] { collectionC, collectionD }, IntMod2));
+            AddWorker(new DivideWorker<int>(collectionB, new Buffer<int>[] { collectionC, collectionD }, DigitSumMod2));
 //            AddWorker(new Consumer<int>(collectionC));
 //            AddWorker(new Consumer<int>(collectionD));
 
@@ -104,9 +109,15 @@ namespace ProducerCustomer
             return true;
         }
 
-        static int IntMod2(int number)
+        static int DigitSumMod2(int number)
         {
-            return number % 2;
+            int sum = 0;
+            while (number != 0)
+            {
+                sum += number%10;
+                number /= 10;
+            }
+            return sum % 2;
         }
     }
 }
