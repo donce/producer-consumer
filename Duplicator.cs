@@ -9,10 +9,10 @@ namespace ProducerCustomer
 {
     class Duplicator<T>
     {
-        private BlockingCollection<T> _collectionIn;
-        private BlockingCollection<T>[] _collectionsOut;
+        private Buffer<T> _collectionIn;
+        private Buffer<T>[] _collectionsOut;
 
-        public Duplicator(BlockingCollection<T> collectionIn, BlockingCollection<T>[] collectionsOut)
+        public Duplicator(Buffer<T> collectionIn, Buffer<T>[] collectionsOut)
         {
             _collectionIn = collectionIn;
             _collectionsOut = collectionsOut;
@@ -25,7 +25,7 @@ namespace ProducerCustomer
                 try
                 {
                     T item = _collectionIn.Take();
-                    foreach (BlockingCollection<T> collection in _collectionsOut)
+                    foreach (Buffer<T> collection in _collectionsOut)
                     {
                         collection.Add(item);
                     }
@@ -34,7 +34,7 @@ namespace ProducerCustomer
                 {
                 }
             }
-            foreach (BlockingCollection<T> collection in _collectionsOut)
+            foreach (Buffer<T> collection in _collectionsOut)
             {
                 collection.CompleteAdding();
             }

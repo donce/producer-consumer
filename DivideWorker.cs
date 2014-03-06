@@ -8,28 +8,29 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class DivideWorker<T>
+    class DivideWorker<T> : Worker<T>
     {
         public delegate int HashDelegate(T item);
         
-        private readonly BlockingCollection<T> _collectionIn;
-        private readonly BlockingCollection<T>[] _collectionsOut;
+        private readonly Buffer<T> _collectionIn;
+        private readonly Buffer<T>[] _collectionsOut;
         private readonly HashDelegate _hashFunction;
 
-        public DivideWorker(BlockingCollection<T> collectionIn, BlockingCollection<T>[] collectionsOut, HashDelegate hashFunction)
+        public DivideWorker(Buffer<T> collectionIn, Buffer<T>[] collectionsOut, HashDelegate hashFunction) : base("Divide Worker")
         {
             _collectionIn = collectionIn;
             _collectionsOut = collectionsOut;
             _hashFunction = hashFunction;
         }
 
-        public void Run()
+        protected override void Run()
         {
             while (!_collectionIn.IsCompleted)
             {
                 try
                 {
                     T item = _collectionIn.Take();
+                    Current = item;
                     int index = _hashFunction(item);
                     if (index < 0 || index >= _collectionsOut.Length)
                         throw new Exception();
@@ -39,7 +40,8 @@ namespace ProducerCustomer
                 {
                 }
             }
-            foreach (BlockingCollection<T> collection in _collectionsOut)
+            Current = default(T);
+            foreach (Buffer<T> collection in _collectionsOut)
             {
                 collection.CompleteAdding();
             }

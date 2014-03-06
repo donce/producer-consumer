@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class MiddleMan<T>
+    class MiddleMan<T> : Worker<T>
     {
-        private BlockingCollection<T> _collectionIn, _collectionOut;
+        private Buffer<T> _collectionIn, _collectionOut;
 
-        public MiddleMan(BlockingCollection<T> collectionIn, BlockingCollection<T> collectionOut)
+        public MiddleMan(Buffer<T> collectionIn, Buffer<T> collectionOut) : base("Middle man")
         {
             _collectionIn = collectionIn;
             _collectionOut = collectionOut;
         }
 
-        public void Run()
+        protected override void Run()
         {
             while (!_collectionIn.IsCompleted)
             {
@@ -25,7 +25,6 @@ namespace ProducerCustomer
                 {
                     T item = _collectionIn.Take();
                     _collectionOut.Add(item);
-                    Console.WriteLine("Take {0}.", item);
                 }
                 catch (InvalidOperationException) { }
             }

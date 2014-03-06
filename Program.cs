@@ -3,37 +3,95 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using log4net;
+using log4net.Appender;
+using log4net.Config;
+using log4net.Core;
 
 namespace ProducerCustomer
 {
     class Program
     {
+        private static List<Worker<int>> workers = new List<Worker<int>>();
+        private static List<Task> tasks = new List<Task>();
+
+        public static readonly ILog log = LogManager.GetLogger(typeof(Program));
+
+        [STAThread]
         static void Main(string[] args)
         {
-            BlockingCollection<int> collectionA = new BlockingCollection<int>();
-            BlockingCollection<int> collectionB = new BlockingCollection<int>();
-            BlockingCollection<int> collectionC = new BlockingCollection<int>();
-            BlockingCollection<int> collectionD = new BlockingCollection<int>();
-            
-            Producer producer = new Producer(collectionA, 10);
-            FilterWorker<int> filterWorker = new FilterWorker<int>(collectionA, collectionB, IsPrime);
-            DivideWorker<int> divideWorker = new DivideWorker<int>(collectionB, new BlockingCollection<int>[] { collectionC, collectionD }, IntMod2);
-            Consumer<int> consumerA = new Consumer<int>(collectionC);
-            Consumer<int> consumerB = new Consumer<int>(collectionD);
+//            FileInfo fileInfo = ;
+            FileInfo info = new FileInfo(@"../../logconfig.xml");
+            Console.WriteLine(info);
+            XmlConfigurator.Configure(info);
+//            BasicConfigurator.Configure();
+            log.Info("Program started");
 
-            List<Task> tasks = new List<Task>();
-            tasks.Add(Task.Factory.StartNew(producer.Run));
-            tasks.Add(Task.Factory.StartNew(filterWorker.Run));
-            tasks.Add(Task.Factory.StartNew(divideWorker.Run));
-            tasks.Add(Task.Factory.StartNew(consumerA.Run));
-            tasks.Add(Task.Factory.StartNew(consumerB.Run));
+//            ConsoleAppender appender = new ConsoleAppender();
+//            LoggingEventData data = new LoggingEventData();
+//            LoggingEvent myEvent = new LoggingEvent(data);
+//            appender.DoAppend(myEvent);
+//            ILog logger = 
 
-            //TODO: "Use thread pools in mains"
-            Task.WaitAll(tasks.ToArray());
+            Buffer<int> collectionA = new Buffer<int>("First");
+            Buffer<int> collectionB = new Buffer<int>("Second");
+            Buffer<int> collectionC = new Buffer<int>("Third");
+            Buffer<int> collectionD = new Buffer<int>("Fourth");
+
+            ShowCollection(collectionA);
+            ShowCollection(collectionB);
+            ShowCollection(collectionC);
+            ShowCollection(collectionD);
+
+            AddWorker(new Producer(collectionA, 30));
+            AddWorker(new FilterWorker<int>(collectionA, collectionB, IsPrime));
+            AddWorker(new DivideWorker<int>(collectionB, new Buffer<int>[] { collectionC, collectionD }, DigitSumMod2));
+//            AddWorker(new Consumer<int>(collectionC));
+//            AddWorker(new Consumer<int>(collectionD));
+
+
+            StartForm(new ControlWindow());
+        }
+
+        public static void Start()
+        {
+            StartWorkers();
+//            Task.WaitAll(tasks.ToArray());
+        }
+
+        static void AddWorker(Worker<int> worker)
+        {
+            workers.Add(worker);
+            StartForm(new WorkerWindow(worker));
+        }
+
+        static void StartWorkers()
+        {
+            log.Info("Workers starting...");
+            foreach (Worker<int> worker in workers)
+            {
+                tasks.Add(Task.Factory.StartNew(worker.Start));
+            }
+        }
+
+        static void ShowCollection<T>(Buffer<T> collection)
+        {
+            StartForm(new BufferWindow<T>(collection));
+        }
+
+        static Thread StartForm(Form form)
+        {
+            log.Info("Form starting...");
+            Thread thread = new Thread(() => Application.Run(form));
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            return thread;
         }
 
         static bool IsEven(int number)
@@ -51,9 +109,15 @@ namespace ProducerCustomer
             return true;
         }
 
-        static int IntMod2(int number)
+        static int DigitSumMod2(int number)
         {
-            return number % 2;
+            int sum = 0;
+            while (number != 0)
+            {
+                sum += number%10;
+                number /= 10;
+            }
+            return sum % 2;
         }
     }
 }

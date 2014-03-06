@@ -7,25 +7,24 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class Consumer<T>
+    class Consumer<T> : Worker<T>
     {
-        private readonly BlockingCollection<T> _collection;
+        private readonly Buffer<T> _collection;
         
-        public Consumer(BlockingCollection<T> collection)
+        public Consumer(Buffer<T> collection) : base("Consumer")
         {
             if (collection == null)
                 throw new ArgumentNullException();
             _collection = collection;
         }
 
-        public void Run()
+        protected override void Run()
         {
             while (!_collection.IsCompleted)
             {
                 try
                 {
                     T item = _collection.Take();
-                    Console.WriteLine("Take {0}.", item);
                 }
                 catch (InvalidOperationException) { }
             }
