@@ -18,7 +18,7 @@ namespace ProducerCustomer
 {
     class Program
     {
-        private static List<Worker> workers = new List<Worker>();
+        private static List<Worker<int>> workers = new List<Worker<int>>();
         private static List<Task> tasks = new List<Task>();
 
         public static readonly ILog log = LogManager.GetLogger(typeof(Program));
@@ -65,7 +65,7 @@ namespace ProducerCustomer
 //            Task.WaitAll(tasks.ToArray());
         }
 
-        static void AddWorker(Worker worker)
+        static void AddWorker(Worker<int> worker)
         {
             workers.Add(worker);
             StartForm(new WorkerWindow(worker));
@@ -74,7 +74,7 @@ namespace ProducerCustomer
         static void StartWorkers()
         {
             log.Info("Workers starting...");
-            foreach (Worker worker in workers)
+            foreach (Worker<int> worker in workers)
             {
                 tasks.Add(Task.Factory.StartNew(worker.Start));
             }

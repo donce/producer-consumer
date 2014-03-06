@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    abstract public class Worker
+    abstract public class Worker<T>
     {
         private readonly String _name;
+        public T Current;
 
         public enum State
         {

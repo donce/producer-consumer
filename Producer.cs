@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class Producer : Worker
+    class Producer : Worker<int>
     {
         private Buffer<int> _collection;
         private int _howMany;
@@ -26,9 +26,11 @@ namespace ProducerCustomer
         {
             for (int i = 1; i <= _howMany; ++i)
             {
+                Current = i;
                 _collection.Add(i);
             }
             _collection.CompleteAdding();
+            Current = default(int);
         }
     }
 }

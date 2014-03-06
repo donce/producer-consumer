@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class DivideWorker<T> : Worker
+    class DivideWorker<T> : Worker<T>
     {
         public delegate int HashDelegate(T item);
         
@@ -30,6 +30,7 @@ namespace ProducerCustomer
                 try
                 {
                     T item = _collectionIn.Take();
+                    Current = item;
                     int index = _hashFunction(item);
                     if (index < 0 || index >= _collectionsOut.Length)
                         throw new Exception();
@@ -39,6 +40,7 @@ namespace ProducerCustomer
                 {
                 }
             }
+            Current = default(T);
             foreach (Buffer<T> collection in _collectionsOut)
             {
                 collection.CompleteAdding();

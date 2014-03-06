@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class MiddleMan<T> : Worker
+    class MiddleMan<T> : Worker<T>
     {
         private Buffer<T> _collectionIn, _collectionOut;
 

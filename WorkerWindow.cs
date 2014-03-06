@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,10 +7,11 @@ namespace ProducerCustomer
 {
     public partial class WorkerWindow : Form
     {
-        private Worker worker;
-        private Worker.State lastState = Worker.State.New;
+        private Worker<int> worker;
+        private Worker<int>.State lastState = Worker<int>.State.New;
+        private int lastCurrent = default(int);
 
-        public WorkerWindow(Worker worker)
+        public WorkerWindow(Worker<int> worker)
         {
             if (worker == null)
                 throw new ArgumentNullException("worker");
@@ -30,13 +25,14 @@ namespace ProducerCustomer
         {
             while (true)
             {
-                if (worker.state != lastState)
+                if (worker.state != lastState || worker.Current != lastCurrent)
                 {
                     try
                     {
                         this.Invoke((MethodInvoker)delegate
                         {
                             stateLabel.Text = worker.stateTitle;
+                            currentLabel.Text = worker.Current == 0 ? "Empty" : worker.Current.ToString();
                         });
                     }
                     catch (ObjectDisposedException)
@@ -44,6 +40,7 @@ namespace ProducerCustomer
                         return;
                     }
                     lastState = worker.state;
+                    lastCurrent = worker.Current;
                 }
                 Thread.Sleep(200);
             }

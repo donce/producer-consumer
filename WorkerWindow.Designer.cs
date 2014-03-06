@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkerWindow));
             this.nameLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.currentLabel = new System.Windows.Forms.Label();
             this.stateLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -57,21 +58,31 @@
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
+            // currentLabel
+            // 
+            this.currentLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F);
+            this.currentLabel.Location = new System.Drawing.Point(12, 196);
+            this.currentLabel.Name = "currentLabel";
+            this.currentLabel.Size = new System.Drawing.Size(185, 46);
+            this.currentLabel.TabIndex = 2;
+            this.currentLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
             // stateLabel
             // 
             this.stateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F);
-            this.stateLabel.Location = new System.Drawing.Point(12, 196);
+            this.stateLabel.Location = new System.Drawing.Point(12, 242);
             this.stateLabel.Name = "stateLabel";
             this.stateLabel.Size = new System.Drawing.Size(185, 46);
-            this.stateLabel.TabIndex = 2;
+            this.stateLabel.TabIndex = 3;
             this.stateLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // WorkerWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(207, 251);
+            this.ClientSize = new System.Drawing.Size(207, 296);
             this.Controls.Add(this.stateLabel);
+            this.Controls.Add(this.currentLabel);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.nameLabel);
             this.Name = "WorkerWindow";
@@ -86,6 +97,7 @@
 
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label currentLabel;
         private System.Windows.Forms.Label stateLabel;
     }
 }
