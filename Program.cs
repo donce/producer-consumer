@@ -33,11 +33,6 @@ namespace ProducerCustomer
 //            BasicConfigurator.Configure();
             log.Info("Program started");
 
-//            ConsoleAppender appender = new ConsoleAppender();
-//            LoggingEventData data = new LoggingEventData();
-//            LoggingEvent myEvent = new LoggingEvent(data);
-//            appender.DoAppend(myEvent);
-//            ILog logger = 
 
             Buffer<int> collectionA = new Buffer<int>("First");
             Buffer<int> collectionB = new Buffer<int>("Second");

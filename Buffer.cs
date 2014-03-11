@@ -12,14 +12,22 @@ namespace ProducerCustomer
     {
         protected string _name;
 
+        private int producersLeft;
+
         public string Name
         {
             get { return _name; }
         }
 
-        public Buffer(string name)
+        public Buffer(string name) : this(name, 1)
+        {
+        }
+
+
+        public Buffer(string name, int producers)
         {
             _name = name;
+            producersLeft = producers;
         }
 
         public new void Add(T item)
@@ -33,6 +41,17 @@ namespace ProducerCustomer
             T item = base.Take();
             Thread.Sleep(1000);
             return item;
+        }
+
+        public void CompleteAdding()
+        {
+            lock (this)
+            {
+                if (--producersLeft == 0)
+                    base.CompleteAdding();
+                if (producersLeft < 0)
+                    throw new Exception("Trying to complete the buffer when it is already completed.");
+            }
         }
     }
 }
