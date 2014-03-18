@@ -44,7 +44,7 @@ namespace ProducerCustomer
             ShowCollection(collectionC);
             ShowCollection(collectionD);
 
-            AddWorker(new Producer(collectionA, 30));
+            AddWorker(new Producer<int>(collectionA, 30, IntegerFactory.Instance()));
             AddWorker(new FilterWorker<int>(collectionA, collectionB, IsPrime));
             AddWorker(new DivideWorker<int>(collectionB, new Buffer<int>[] { collectionC, collectionD }, DigitSumMod2));
 //            AddWorker(new Consumer<int>(collectionC));

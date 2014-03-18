@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace ProducerCustomer
 {
-    class Producer : Worker<int>
+    class Producer<T> : Worker<T>
     {
-        private Buffer<int> _collection;
+        private Buffer<T> _collection;
         private int _howMany;
+        private IElementFactory<T> _factory; 
 
-        public Producer(Buffer<int> collection, int howMany) : base("Producer")
+        public Producer(Buffer<T> collection, int howMany, IElementFactory<T> factory) : base("Producer")
         {
             if (collection == null)
                 throw new ArgumentNullException("collection");
@@ -20,17 +21,19 @@ namespace ProducerCustomer
                 throw new ArgumentOutOfRangeException("howMany");
             _collection = collection;
             _howMany = howMany;
+            _factory = factory;
         }
 
         protected override void Run()
         {
             for (int i = 1; i <= _howMany; ++i)
             {
-                Current = i;
-                _collection.Add(i);
+                T now = _factory.GetElement(i);
+                Current = now;
+                _collection.Add(now);
             }
             _collection.CompleteAdding();
-            Current = default(int);
+            Current = default(T);
         }
     }
 }

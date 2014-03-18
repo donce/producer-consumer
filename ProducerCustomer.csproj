@@ -63,6 +63,8 @@
     <Compile Include="FilterWorker.cs" />
     <Compile Include="Consumer.cs" />
     <Compile Include="Duplicator.cs" />
+    <Compile Include="IElementFactory.cs" />
+    <Compile Include="IntegerFactory.cs" />
     <Compile Include="MiddleMan.cs" />
     <Compile Include="Producer.cs" />
     <Compile Include="Program.cs" />
